@@ -19,8 +19,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     var projects = repository.Projects.FindAll();
     var environments = new ReferenceCollection(new [] {
-        repository.Environments.FindByName("Integration Test").Id,
-        repository.Environments.FindByName("Demo").Id
+        repository.Environments.FindByName("Integration Test").Id
     });
     var tenant = repository.Tenants.FindByName(branchName);
     if (tenant == null)

@@ -1,23 +1,33 @@
 Param(
-    [Parameter(Mandatory=$True)] [string]$tenant,
-    [Parameter(Mandatory=$True)] [string]$tenantName
+    [string]$tenant,
+    [Parameter(Mandatory=$True)] [string]$stackName,
+    [Parameter(Mandatory=$True)] [string]$environment
 )
 
 $ErrorActionPreference = "Stop"
 
-$stackName = "IntegrationTests-$tenantName"
+$stackName = "IntegrationTests-$stackName"
 $completedFormationName = ".\CompletedCloudFormation.json"
 
 if (-not $env:AWS_ACCESS_KEY_ID) {
-    throw "AWS_ACCESS_KEY_ID has not been set"
+    $env:AWS_ACCESS_KEY_ID = $OctopusParameters["AWS_ACCESS_KEY_ID"]
 }
 if (-not $env:AWS_SECRET_ACCESS_KEY) {
-    throw "AWS_SECRET_ACCESS_KEY has not been set"
+    $env:AWS_SECRET_ACCESS_KEY = $OctopusParameters["AWS_SECRET_ACCESS_KEY"]
 }
 
 $registerRequest = Get-Content ".\Register.json" | ConvertFrom-Json
 $formation = Get-Content ".\CloudFormation.json" | ConvertFrom-Json
-$registerRequest.TenantIds = @($tenant)
+
+if($tenant) {
+    $registerRequest.TenantIds = @($tenant)
+    $registerRequest.TenantedDeploymentParticipation = "Tenanted"
+} else {
+    $registerRequest.TenantIds = @()
+    $registerRequest.TenantedDeploymentParticipation = "Untenanted"
+}
+
+$registerRequest.EnvironmentIds = @($environment)
 
 function GetUserData($roles) {
     $registerRequest.Roles = $roles
