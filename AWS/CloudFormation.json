@@ -1,0 +1,87 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "AppServerInstance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "terminate",
+        "ImageId": "ami-10918173",
+        "InstanceType": "t2.micro",
+        "KeyName": "IntegrationTestDemo",
+        "Monitoring": "false",
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": "subnet-2a77cd4f",
+            "SecondaryPrivateIpAddressCount": 1,
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard1"
+              }
+            ],
+            "AssociatePublicIpAddress": "true"
+          }
+        ],
+        "UserData": ""
+      }
+    },
+    "WebServerInstance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "terminate",
+        "ImageId": "ami-10918173",
+        "InstanceType": "t2.micro",
+        "KeyName": "IntegrationTestDemo",
+        "Monitoring": "false",
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": "subnet-2a77cd4f",
+            "SecondaryPrivateIpAddressCount": 1,
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard1"
+              }
+            ],
+            "AssociatePublicIpAddress": "true"
+          }
+        ],
+        "UserData": ""
+      }
+    },
+    "sglaunchwizard1": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-1 created 2017-07-16T21:39:35.541+10:00",
+        "VpcId": "vpc-9b05a1fe"
+      }
+    },
+    "ingress1": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard1"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress1": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard1"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    }
+  },
+  "Description": "Integration Test Demo"
+}

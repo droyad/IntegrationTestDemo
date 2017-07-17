@@ -1,0 +1,22 @@
+{
+    "Endpoint": {
+        "CommunicationStyle": "Ssh",
+        "AccountId": "sshkeypair-integration-test-demo",
+        "AccountType": "SshKeyPair",
+        "Host": "$hostname",
+        "Port": 22,
+        "Fingerprint": "$thumbprint"
+    },
+    "TenantedDeploymentParticipation": "Tenanted",
+    "MachinePolicyId": "MachinePolicies-1",
+    "Roles": [
+        "App"
+    ],
+    "EnvironmentIds": [
+        "Environments-1"
+    ],
+    "TenantIds": [
+        "Tenants-1"
+    ],
+    "Name": "$instanceid"
+}
