@@ -21,7 +21,7 @@ var endpoints = from m in repository.Machines.FindAll()
 
 foreach (var e in endpoints)
 {
-	var url = $"http://{e.Host}/20/50";
+	var url = $"http://{e.Host}:7000/20/50";
 	Console.WriteLine($"Requesting {url}");
 
 	using(var response = WebRequest.CreateHttp(url).GetResponse())

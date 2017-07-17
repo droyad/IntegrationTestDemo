@@ -79,8 +79,8 @@
           "Ref": "sglaunchwizard1"
         },
         "IpProtocol": "tcp",
-        "FromPort": "80",
-        "ToPort": "85",
+        "FromPort": "7000",
+        "ToPort": "7010",
         "CidrIp": "0.0.0.0/0"
       }
     },
