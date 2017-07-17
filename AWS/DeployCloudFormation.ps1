@@ -1,7 +1,8 @@
 Param(
     [string]$tenant,
     [Parameter(Mandatory=$True)] [string]$stackName,
-    [Parameter(Mandatory=$True)] [string]$environment
+    [Parameter(Mandatory=$True)] [string]$environment,
+    [Parameter(Mandatory=$True)] [string]$ami
 )
 
 $ErrorActionPreference = "Stop"
@@ -39,6 +40,8 @@ function GetUserData($roles) {
 }
 $formation.Resources.AppServerInstance.Properties.UserData = GetUserData(@("App"))
 $formation.Resources.WebServerInstance.Properties.UserData = GetUserData(@("Web", "App"))
+$formation.Resources.AppServerInstance.Properties.ImageId = $ami
+$formation.Resources.WebServerInstance.Properties.ImageId = $ami
 
 ConvertTo-Json $formation -Depth 100 | Set-Content -Path $completedFormationName
 

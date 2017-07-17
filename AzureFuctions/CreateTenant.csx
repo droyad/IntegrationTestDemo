@@ -10,9 +10,9 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     // Get request body
     dynamic data = await req.Content.ReadAsAsync<object>();
 
-    // Extract github comment from request body
+    // Get the branch name
     string branchName = data["ref"];
-    log.Info("Creating tentant " + branchName);
+    log.Info("Creating tenant " + branchName);
 
     var endpoint = new OctopusServerEndpoint("https://droyad.gq", Environment.GetEnvironmentVariable("ApiKey"));
     var repository = new OctopusRepository(endpoint);
@@ -22,6 +22,8 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         repository.Environments.FindByName("Integration Test").Id
     });
     var tenant = repository.Tenants.FindByName(branchName);
+
+    // Create the tenant if it doesn't exist
     if (tenant == null)
         tenant = repository.Tenants.Create(new TenantResource()
         {
@@ -29,6 +31,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
             ProjectEnvironments = projects.ToDictionary(p => p.Id, p => environments)
         });
 
+    // Update the logo
     using (var fs = File.OpenRead($@"{context.FunctionDirectory}\tennant.jpg"))
 	repository.Tenants.SetLogo(tenant, "logo.jpg", fs);
 

@@ -1,0 +1,9 @@
+{
+  "frameworks": {
+    "net46":{
+      "dependencies": {
+        "Octopus.Client": "4.21.0"
+      }
+    }
+   }
+}

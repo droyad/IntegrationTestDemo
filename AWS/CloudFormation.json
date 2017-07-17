@@ -72,6 +72,18 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
+    "ingress2": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard1"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "85",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
     "egress1": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
