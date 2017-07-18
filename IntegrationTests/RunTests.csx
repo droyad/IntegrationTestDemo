@@ -22,25 +22,28 @@ var endpoints = from m in repository.Machines.FindAll()
 
 var sw = Stopwatch.StartNew();
 
-foreach (var e in endpoints)
+void TestEndpoint(SshEndpointResource ssh)
 {
-	var url = $"http://{e.Host}:7000/20/50";
-
-	while(true)
+	var url = $"http://{ssh.Host}:7000/20/50";
+	while (sw.Elapsed < TimeSpan.FromMinutes(1))
 		try
 		{
-			if(sw.Elapsed > TimeSpan.FromMinutes(1))
-				throw new Exception("Execution timed out");
-
 			Console.WriteLine($"Requesting {url}");
 
-			using(var response = WebRequest.CreateHttp(url).GetResponse())
+			using (var response = WebRequest.CreateHttp(url).GetResponse())
 			using (var s = new StreamReader(response.GetResponseStream()))
 				Console.WriteLine("Got " + s.ReadToEnd());
+
+			return;
 		}
 		catch (WebException ex)
 		{
 			Console.WriteLine("Error: " + ex.Message);
 			Thread.Sleep(TimeSpan.FromSeconds(10));
 		}
+	throw new Exception("Execution timed out");
 }
+
+foreach (var e in endpoints)
+	TestEndpoint(e);
+
