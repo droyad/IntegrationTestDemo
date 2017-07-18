@@ -5,6 +5,7 @@ using Octopus.Client.Model;
 using Octopus.Client.Model.Endpoints;
 using System.Net;
 using System.IO;
+using System.Threading;
 
 var apiKey = Octopus.Parameters["ApiKey"];
 var tenantId = Octopus.Parameters["Octopus.Deployment.Tenant.Id"];

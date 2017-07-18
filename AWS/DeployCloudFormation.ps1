@@ -1,8 +1,8 @@
 Param(
-    [string]$tenant,
-    [Parameter(Mandatory=$True)] [string]$stackName,
-    [Parameter(Mandatory=$True)] [string]$environment,
-    [Parameter(Mandatory=$True)] [string]$ami
+    [string] $tenant = "#{Octopus.Deployment.Tenant.Id}",
+    [string] $stackName = "#{Octopus.Deployment.Tenant.Name}",
+    [string] $environment = "#{Octopus.Environment.Id}",
+    [string] $ami = "#{AMI}"
 )
 
 $ErrorActionPreference = "Stop"

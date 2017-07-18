@@ -1,5 +1,5 @@
 Param(
-    [Parameter(Mandatory=$True)] [string]$stackName
+    [string] $stackName = "#{Octopus.Deployment.Tenant.Name}"
 )
 
 $ErrorActionPreference = "Stop"
