@@ -55,7 +55,7 @@ ReleaseResource GetReleaseToDeploy(ProjectResource project)
 	return null;
 }
 
-void CreateRelease(ProjectResource project, ReleaseResource release)
+void CreateDeployment(ProjectResource project, ReleaseResource release)
 {
 	Console.WriteLine($"Deploying {project.Name} {release.Version}");
 	repository.Deployments.Create(new DeploymentResource()
@@ -74,7 +74,7 @@ foreach (var project in projects)
 	if (release == null)
 		Console.WriteLine("Could not find a suitable release for " + project.Name);
 	else
-		CreateRelease(project, release);
+		CreateDeployment(project, release);
 }
 
 // Wait for projects

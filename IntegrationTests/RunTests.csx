@@ -9,6 +9,7 @@ using System.Threading;
 
 var apiKey = Octopus.Parameters["ApiKey"];
 var tenantId = Octopus.Parameters["Octopus.Deployment.Tenant.Id"];
+var testTimeout = int.Parse(Octopus.Parameters["TestTimeout"]);
 
 var endpoint = new OctopusServerEndpoint("https://droyad.gq", apiKey);
 var repository = new OctopusRepository(endpoint);
@@ -25,7 +26,7 @@ var sw = Stopwatch.StartNew();
 void TestEndpoint(SshEndpointResource ssh)
 {
 	var url = $"http://{ssh.Host}:7000/20/50";
-	while (sw.Elapsed < TimeSpan.FromMinutes(1))
+	while (sw.Elapsed < TimeSpan.FromSeconds(testTimeout))
 		try
 		{
 			Console.WriteLine($"Requesting {url}");

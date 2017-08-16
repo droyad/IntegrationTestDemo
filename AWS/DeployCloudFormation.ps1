@@ -16,6 +16,11 @@ if (-not $env:AWS_ACCESS_KEY_ID) {
 if (-not $env:AWS_SECRET_ACCESS_KEY) {
     $env:AWS_SECRET_ACCESS_KEY = $OctopusParameters["AWS_SECRET_ACCESS_KEY"]
 }
+if ($env:OctopusApiKey) {
+    $apiKey = $env:OctopusApiKey
+} else {
+    $apiKey = $OctopusParameters["ApiKey"]
+}
 
 $registerRequest = Get-Content ".\Register.json" | ConvertFrom-Json
 $formation = Get-Content ".\CloudFormation.json" | ConvertFrom-Json
@@ -36,6 +41,7 @@ function GetUserData($roles) {
     $registerRequestJson = $registerRequestJson.Replace('"', '\"')
     $userData = [String]::Join("`n", (Get-Content ".\UserData.sh"))
     $userData = $userData.Replace("%%registerRequest%%", $registerRequestJson)
+    $userData = $userData.Replace("%%apiKey%%", $apiKey)
     return [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($userData))
 }
 $formation.Resources.AppServerInstance.Properties.UserData = GetUserData(@("App"))
